@@ -32,8 +32,8 @@ export const taskController = () => {
   }
 
   const addTask = async (context: RouterContext) => {
-    const body = await context.request.body();
-    const task: Task = body.value;
+    const body = context.request.body({type: 'json'});
+    const task: Task = await body.value as Task;
     try {
       taskRepository.addTask(task);
       context.response.body = {
@@ -58,8 +58,8 @@ export const taskController = () => {
         throw new Error("invalid id");
       }
       const id = parseInt(context.params.id);
-      const body = await context.request.body();
-      const task: Task = body.value;
+      const body = context.request.body({type: 'json'});
+      const task: Task = await body.value as Task;
       taskRepository.updateTask(id, task);
       context.response.status = 200;
       return;
